@@ -4,14 +4,23 @@ import app.interfaces.Pregunta;
 
 public class VerdaderoFalso implements Pregunta {
     private String enunciado;
-    int tiempoRespuesta;
-    boolean respuesta;
-    TaxonomiaBloom nivelTaxonomia;
+    private int tiempoRespuesta;
+    private boolean respuesta;
+    private TaxonomiaBloom nivelTaxonomia;
 
+    public VerdaderoFalso(){
+        this.enunciado = "";
+        this.tiempoRespuesta = 0;
+        this.respuesta = false;
+        this.nivelTaxonomia = new TaxonomiaBloom();
+    }
+
+    @Override
     public void setEnunciado(String enunciado){
         this.enunciado = enunciado;
     }
 
+    @Override
     public void setTiempoRespuesta(int tiempoSegundos){
         this.tiempoRespuesta = tiempoSegundos;
     }
@@ -20,10 +29,12 @@ public class VerdaderoFalso implements Pregunta {
         this.respuesta = respuesta;
     }
 
+    @Override
     public String getEnunciado(){
         return this.enunciado;
     }
 
+    @Override
     public int getTiempoRespuesta(){
         return this.tiempoRespuesta;
     }
@@ -32,6 +43,7 @@ public class VerdaderoFalso implements Pregunta {
         return this.respuesta;
     }
 
+    @Override
     public void showPregunta(){
         System.out.println("Tipo de pregunta: Verdadero/Falso");
         System.out.println("Enunciado: " + this.getEnunciado());

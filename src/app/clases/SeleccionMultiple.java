@@ -1,0 +1,76 @@
+package app.clases;
+
+import app.interfaces.Pregunta;
+
+import java.awt.image.AreaAveragingScaleFilter;
+import java.lang.classfile.instruction.StackInstruction;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SeleccionMultiple implements Pregunta {
+    private String enunciado;
+    private int tiempoRespuesta;
+    private String respuesta;
+    private List<String> opciones;
+    public TaxonomiaBloom nivelTaxonomia;
+
+    public SeleccionMultiple(){
+        this.enunciado = "";
+        this.tiempoRespuesta = 0;
+        this.respuesta = "";
+        this.opciones = new ArrayList<>();
+        this.nivelTaxonomia = new TaxonomiaBloom();
+    }
+
+    @Override
+    public void setEnunciado(String enunciado) {
+        this.enunciado = enunciado;
+    }
+
+    @Override
+    public void setTiempoRespuesta(int tiempoSegundos){
+        this.tiempoRespuesta = tiempoSegundos;
+    }
+
+    public void setRespuesta(String respuesta){
+        this.respuesta = respuesta;
+    }
+
+    public void agregarOpcion(String opcion){
+        this.opciones.add(opcion);
+    }
+
+    @Override
+    public String getEnunciado(){
+        return this.enunciado;
+    }
+
+    @Override
+    public int getTiempoRespuesta(){
+        return this.tiempoRespuesta;
+    }
+
+    public String getRespuesta(){
+        return this.respuesta;
+    }
+
+    public List<String> getOpciones(){
+        return this.opciones;
+    }
+
+    @Override
+    public void showPregunta() {
+        System.out.println("Tipo de pregunta: Verdadero/Falso");
+        System.out.println("Enunciado: " + this.getEnunciado());
+        System.out.println("Respuesta: " + this.getRespuesta());
+        this.showOpciones();
+        System.out.println("Tiempo de respuesta: " + this.getTiempoRespuesta() + " segundos");
+    }
+
+    public void showOpciones(){
+        System.out.println("Opciones:");
+        for (int i = 0; i < this.opciones.size(); i++){
+            System.out.println("    " + (char)(i+97) + ". " + this.opciones.get(i));
+        }
+    }
+}
