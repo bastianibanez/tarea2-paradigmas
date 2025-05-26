@@ -89,7 +89,7 @@ public class SeleccionMultiple implements Pregunta {
 
     private char intToChar(int num){
         if (!((num + 97 >= 97) && (num + 97 <= 122))){
-            throw new IllegalArgumentException("Valor ingresado es incorrecto se retorna string vacío.");
+            throw new IllegalArgumentException("Valor ingresado es invalido");
         }
         return (char)(num + 97);
     }
