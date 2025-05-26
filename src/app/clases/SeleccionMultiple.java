@@ -2,8 +2,6 @@ package app.clases;
 
 import app.interfaces.Pregunta;
 
-import java.awt.image.AreaAveragingScaleFilter;
-import java.lang.classfile.instruction.StackInstruction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +18,20 @@ public class SeleccionMultiple implements Pregunta {
         this.respuesta = "";
         this.opciones = new ArrayList<>();
         this.nivelTaxonomia = new TaxonomiaBloom();
+    }
+
+    public SeleccionMultiple(
+            String enunciado,
+            int tiempoRespuesta,
+            String respuesta,
+            String nivelTaxonomia
+    ){
+            this.enunciado = enunciado;
+            this.tiempoRespuesta = tiempoRespuesta;
+            this.respuesta = respuesta;
+            this.opciones = new ArrayList<>();
+            this.nivelTaxonomia = new TaxonomiaBloom(nivelTaxonomia);
+
     }
 
     @Override

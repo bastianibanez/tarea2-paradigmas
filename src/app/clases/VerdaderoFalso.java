@@ -15,6 +15,18 @@ public class VerdaderoFalso implements Pregunta {
         this.nivelTaxonomia = new TaxonomiaBloom();
     }
 
+    public VerdaderoFalso(
+            String enunciado,
+            int tiempoRespuesta,
+            boolean respuesta,
+            String nivelTaxonomia
+    ){
+        this.enunciado = enunciado;
+        this.tiempoRespuesta = tiempoRespuesta;
+        this.respuesta = respuesta;
+        this.nivelTaxonomia = new TaxonomiaBloom(nivelTaxonomia);
+    }
+
     @Override
     public void setEnunciado(String enunciado){
         this.enunciado = enunciado;
