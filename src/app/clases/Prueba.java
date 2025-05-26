@@ -59,8 +59,13 @@ public class Prueba implements app.interfaces.Prueba {
     }
 
     @Override
+    // Dado que se muestran los indices de 1 en adelante se le resta 1 a idx
     public void borrarPregunta(int idxPregunta){
-        this.preguntas.remove(idxPregunta);
+        if (!(idxPregunta > 0 && idxPregunta <= this.preguntas.size())){
+            System.out.println("Selección incorrecta. Intente nuevamente");
+            return;
+        }
+        this.preguntas.remove(idxPregunta-1);
     }
 
     @Override
