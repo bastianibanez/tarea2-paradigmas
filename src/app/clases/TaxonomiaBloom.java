@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class TaxonomiaBloom implements app.interfaces.TaxonomiaBloom {
-    private String[] nivelesTaxonomia = {
+    private final String[] nivelesTaxonomia = {
             "Crear",
             "Evaluar",
             "Analizar",
