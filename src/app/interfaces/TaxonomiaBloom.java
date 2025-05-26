@@ -6,4 +6,5 @@ public interface TaxonomiaBloom {
     String getNivel();
 
     void showNivel();
+    void showNiveles();
 }
