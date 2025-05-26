@@ -83,7 +83,14 @@ public class SeleccionMultiple implements Pregunta {
     public void showOpciones(){
         System.out.println("Opciones:");
         for (int i = 0; i < this.opciones.size(); i++){
-            System.out.println("    " + (char)(i+97) + ". " + this.opciones.get(i));
+            System.out.println("    " + intToChar(i) + ". " + this.opciones.get(i));
         }
+    }
+
+    private char intToChar(int num){
+        if (!((num + 97 >= 97) && (num + 97 <= 122))){
+            throw new IllegalArgumentException("Valor ingresado es incorrecto se retorna string vacío.");
+        }
+        return (char)(num + 97);
     }
 }
