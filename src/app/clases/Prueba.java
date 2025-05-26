@@ -9,7 +9,7 @@ public class Prueba implements app.interfaces.Prueba {
     private List<Pregunta> preguntas;
 
     public Prueba(){
-        preguntas = new ArrayList<>();
+        this.preguntas = new ArrayList<>();
     }
 
     public void agregarVerdaderoFalso(
