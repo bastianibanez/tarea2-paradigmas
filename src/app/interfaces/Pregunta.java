@@ -7,5 +7,5 @@ public interface Pregunta {
     String getEnunciado();
     int getTiempoRespuesta();
 
-    void ShowPregunta();
+    void showPregunta();
 }
