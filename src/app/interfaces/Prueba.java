@@ -1,14 +1,11 @@
 package app.interfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface Prueba {
-    void agregarPregunta(Pregunta pregunta);
-
     Pregunta getPregunta(int idxPregunta);
-    ArrayList<Pregunta> getPreguntas();
-
-    void actualizarPregunta(int idxPregunta, Pregunta preguntaActualizada);
+    List<Pregunta> getPreguntas();
 
     void borrarPregunta(int idxPregunta);
 
