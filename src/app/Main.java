@@ -22,5 +22,8 @@ public class Main {
         p.agregarPregunta(dos);
 
         p.showPreguntas();
+
+        p.borrarPregunta(1);
+        p.showPreguntas();
     }
 }

@@ -58,6 +58,7 @@ public class VerdaderoFalso implements Pregunta {
     @Override
     public void showPregunta(){
         System.out.println("Tipo de pregunta: Verdadero/Falso");
+        System.out.println("Nivel Taxonomía de Bloom: " + nivelTaxonomia.getNivel());
         System.out.println("Enunciado: " + this.getEnunciado());
         System.out.println("Respuesta: " + this.getRespuesta());
         System.out.println("Tiempo de respuesta: " + this.getTiempoRespuesta() + " segundos");
