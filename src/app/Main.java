@@ -1,5 +1,5 @@
 package app;
-/*awda*/
+
 import app.clases.Prueba;
 import app.clases.SeleccionMultiple;
 import app.clases.TaxonomiaBloom;
