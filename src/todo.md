@@ -1,6 +1,0 @@
-- Lector de archivos
-- Escritor de archivos
-- GUI
-- Interfaz/Clase selección múltiple
-- Interfaz/Clase verdadero-falso
-- Interfaz/Clase Taxonomía bloom
