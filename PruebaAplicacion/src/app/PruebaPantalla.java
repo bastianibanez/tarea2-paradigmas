@@ -9,7 +9,7 @@ import model.QuestionType;
 
 public class PruebaPantalla extends JFrame {
 
-    private List<Question> questions;
+    private List<Question> preguntas;
     private int currentIndex = 0;
     private boolean reviewMode = false;
 
@@ -21,13 +21,13 @@ public class PruebaPantalla extends JFrame {
     private JButton prevButton = new JButton("Anterior");
     private JButton nextButton = new JButton("Siguiente");
 
-    public PruebaPantalla(List<Question> questions) {
-        this(questions, false);
+    public PruebaPantalla(List<Question> preguntas) {
+        this(preguntas, false);
     }
 
-    public PruebaPantalla(List<Question> questions, boolean reviewMode) {
+    public PruebaPantalla(List<Question> preguntas, boolean reviewMode) {
         super(reviewMode ? "Revisión de respuestas" : "Prueba - Preguntas");
-        this.questions = questions;
+        this.preguntas = preguntas;
         this.reviewMode = reviewMode;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,10 +85,10 @@ public class PruebaPantalla extends JFrame {
     }
 
     private void actualizarPregunta() {
-        Question q = questions.get(currentIndex);
+        Question q = preguntas.get(currentIndex);
 
         questionLabel.setText("(" + q.getType() + " - " + q.getLevel() + ") " + q.getText());
-        progressLabel.setText("Pregunta " + (currentIndex + 1) + " de " + questions.size());
+        progressLabel.setText("Pregunta " + (currentIndex + 1) + " de " + preguntas.size());
 
         if (q.getType() == QuestionType.TRUE_FALSE) {
             optionButtons[0].setText(q.getOptions()[0]);
@@ -130,12 +130,12 @@ public class PruebaPantalla extends JFrame {
         }
 
         prevButton.setEnabled(currentIndex > 0);
-        nextButton.setText(currentIndex == questions.size() - 1 ? (reviewMode ? "Cerrar" : "Finalizar") : "Siguiente");
+        nextButton.setText(currentIndex == preguntas.size() - 1 ? (reviewMode ? "Cerrar" : "Finalizar") : "Siguiente");
     }
 
     private void guardarRespuesta(int selectedIndex) {
         if (!reviewMode) {
-            Question q = questions.get(currentIndex);
+            Question q = preguntas.get(currentIndex);
             q.setUserAnswer(selectedIndex);
         }
     }
@@ -148,21 +148,21 @@ public class PruebaPantalla extends JFrame {
     }
 
     private void botonSiguiente(ActionEvent e) {
-        Question q = questions.get(currentIndex);
+        Question q = preguntas.get(currentIndex);
 
         if (!reviewMode && q.getUserAnswer() < 0) {
             JOptionPane.showMessageDialog(this, "Por favor, selecciona una respuesta antes de continuar.", "Respuesta requerida", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (currentIndex < questions.size() - 1) {
+        if (currentIndex < preguntas.size() - 1) {
             currentIndex++;
             actualizarPregunta();
         } else {
             if (reviewMode) {
                 this.dispose();
             } else {
-                new ResultadoPantalla(questions);
+                new ResultadoPantalla(preguntas);
                 this.dispose();
             }
         }
