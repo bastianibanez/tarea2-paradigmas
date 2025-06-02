@@ -4,12 +4,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.*;
-import model.Question;
-import model.QuestionType;
+import model.Pregunta;
+import model.TipoPregunta;
 
 public class PruebaPantalla extends JFrame {
 
-    private List<Question> preguntas;
+    private List<Pregunta> preguntas;
     private int currentIndex = 0;
     private boolean reviewMode = false;
 
@@ -21,11 +21,11 @@ public class PruebaPantalla extends JFrame {
     private JButton prevButton = new JButton("Anterior");
     private JButton nextButton = new JButton("Siguiente");
 
-    public PruebaPantalla(List<Question> preguntas) {
+    public PruebaPantalla(List<Pregunta> preguntas) {
         this(preguntas, false);
     }
 
-    public PruebaPantalla(List<Question> preguntas, boolean reviewMode) {
+    public PruebaPantalla(List<Pregunta> preguntas, boolean reviewMode) {
         super(reviewMode ? "Revisión de respuestas" : "Prueba - Preguntas");
         this.preguntas = preguntas;
         this.reviewMode = reviewMode;
@@ -85,12 +85,12 @@ public class PruebaPantalla extends JFrame {
     }
 
     private void actualizarPregunta() {
-        Question q = preguntas.get(currentIndex);
+        Pregunta q = preguntas.get(currentIndex);
 
         questionLabel.setText("(" + q.getType() + " - " + q.getLevel() + ") " + q.getText());
         progressLabel.setText("Pregunta " + (currentIndex + 1) + " de " + preguntas.size());
 
-        if (q.getType() == QuestionType.TRUE_FALSE) {
+        if (q.getType() == TipoPregunta.VERDADERO_FALSO) {
             optionButtons[0].setText(q.getOptions()[0]);
             optionButtons[1].setText(q.getOptions()[1]);
             optionButtons[0].setVisible(true);
@@ -135,7 +135,7 @@ public class PruebaPantalla extends JFrame {
 
     private void guardarRespuesta(int selectedIndex) {
         if (!reviewMode) {
-            Question q = preguntas.get(currentIndex);
+            Pregunta q = preguntas.get(currentIndex);
             q.setUserAnswer(selectedIndex);
         }
     }
@@ -148,7 +148,7 @@ public class PruebaPantalla extends JFrame {
     }
 
     private void botonSiguiente(ActionEvent e) {
-        Question q = preguntas.get(currentIndex);
+        Pregunta q = preguntas.get(currentIndex);
 
         if (!reviewMode && q.getUserAnswer() < 0) {
             JOptionPane.showMessageDialog(this, "Por favor, selecciona una respuesta antes de continuar.", "Respuesta requerida", JOptionPane.WARNING_MESSAGE);

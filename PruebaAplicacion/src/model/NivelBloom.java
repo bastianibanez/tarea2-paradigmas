@@ -1,6 +1,6 @@
 package model;
 
-public enum BloomLevel {
+public enum NivelBloom {
     RECORDAR,
     ENTENDER,
     APLICAR,

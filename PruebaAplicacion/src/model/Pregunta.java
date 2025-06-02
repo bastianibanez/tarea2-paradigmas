@@ -1,15 +1,15 @@
 package model;
 
-public class Question {
+public class Pregunta {
 
-    private QuestionType type;
-    private BloomLevel level;
+    private TipoPregunta type;
+    private NivelBloom level;
     private String text;
     private String[] options;
     private int correctAnswerIndex; // 0-based
     private int userAnswer = -1; // -1 si no respondió
 
-    public Question(QuestionType type, BloomLevel level, String text, String[] options, int correctAnswerIndex) {
+    public Pregunta(TipoPregunta type, NivelBloom level, String text, String[] options, int correctAnswerIndex) {
         this.type = type;
         this.level = level;
         this.text = text;
@@ -17,11 +17,11 @@ public class Question {
         this.correctAnswerIndex = correctAnswerIndex;
     }
 
-    public QuestionType getType() {
+    public TipoPregunta getType() {
         return type;
     }
 
-    public BloomLevel getLevel() {
+    public NivelBloom getLevel() {
         return level;
     }
 
