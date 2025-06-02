@@ -1,170 +1,403 @@
 package app;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.*;
 import model.Pregunta;
 import model.TipoPregunta;
 
-public class PruebaPantalla extends JFrame {
 
-    private List<Pregunta> preguntas;
-    private int currentIndex = 0;
-    private boolean reviewMode = false;
+public class PruebaPantalla extends javax.swing.JFrame {
 
-    private JLabel questionLabel = new JLabel();
-    private JLabel progressLabel = new JLabel();
-    private JLabel feedbackLabel = new JLabel();
-    private JRadioButton[] optionButtons = new JRadioButton[4];
-    private ButtonGroup optionGroup = new ButtonGroup();
-    private JButton prevButton = new JButton("Anterior");
-    private JButton nextButton = new JButton("Siguiente");
-
-    public PruebaPantalla(List<Pregunta> preguntas) {
-        this(preguntas, false);
-    }
-
-    public PruebaPantalla(List<Pregunta> preguntas, boolean reviewMode) {
-        super(reviewMode ? "Revisión de respuestas" : "Prueba - Preguntas");
+    int xMouse, yMouse;
+    
+    
+    public PruebaPantalla(List<Pregunta> preguntas, boolean modoRevision) {
+        initComponents();
         this.preguntas = preguntas;
-        this.reviewMode = reviewMode;
+        this.modoRevision = modoRevision;       
+        this.botonesOpciones = new JRadioButton[]{opcion1, opcion2, opcion3, opcion4};
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout(10, 10));
-
-        // Panel superior
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        progressLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        questionLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        topPanel.add(progressLabel);
-        topPanel.add(Box.createVerticalStrut(5));
-        topPanel.add(questionLabel);
-        topPanel.add(Box.createVerticalStrut(10));
-        add(topPanel, BorderLayout.NORTH);
-
-        // Opciones
-        JPanel optionsPanel = new JPanel(new GridLayout(4, 1, 5, 5));
-        for (int i = 0; i < optionButtons.length; i++) {
-            optionButtons[i] = new JRadioButton();
-            optionGroup.add(optionButtons[i]);
-            optionsPanel.add(optionButtons[i]);
-            int index = i;
-            optionButtons[i].addActionListener(e -> guardarRespuesta(index));
+        for (int i = 0; i < botonesOpciones.length; i++) {
+            final int index = i;
+            botonesOpciones[i].addActionListener(e -> guardarRespuesta(index));
         }
-        add(optionsPanel, BorderLayout.CENTER);
-
-        // Panel inferior: feedback + navegación
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
-
-        feedbackLabel.setFont(new Font("Arial", Font.ITALIC, 12));
-        feedbackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        feedbackLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        bottomPanel.add(feedbackLabel);
-        bottomPanel.add(Box.createVerticalStrut(10));
-
-        JPanel navPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
-        prevButton.setPreferredSize(new Dimension(120, 30));
-        nextButton.setPreferredSize(new Dimension(120, 30));
-        navPanel.add(prevButton);
-        navPanel.add(nextButton);
-
-        bottomPanel.add(navPanel);
-        add(bottomPanel, BorderLayout.SOUTH);
-
-        // Listeners
-        prevButton.addActionListener(this::botonAnterior);
-        nextButton.addActionListener(this::botonSiguiente);
 
         actualizarPregunta();
-        setVisible(true);
     }
-
+    
     private void actualizarPregunta() {
-        Pregunta q = preguntas.get(currentIndex);
+        Pregunta preguntaActual = preguntas.get(indiceActual);
 
-        questionLabel.setText("(" + q.getType() + " - " + q.getLevel() + ") " + q.getText());
-        progressLabel.setText("Pregunta " + (currentIndex + 1) + " de " + preguntas.size());
+        pregunta.setText("(" + preguntaActual.getType() + " - " + preguntaActual.getLevel() + ") " + preguntaActual.getText());
+        progreso.setText("Pregunta " + (indiceActual + 1) + " de " + preguntas.size());
 
-        if (q.getType() == TipoPregunta.VERDADERO_FALSO) {
-            optionButtons[0].setText(q.getOptions()[0]);
-            optionButtons[1].setText(q.getOptions()[1]);
-            optionButtons[0].setVisible(true);
-            optionButtons[1].setVisible(true);
-            optionButtons[2].setVisible(false);
-            optionButtons[3].setVisible(false);
-        } else {
-            for (int i = 0; i < optionButtons.length; i++) {
-                optionButtons[i].setText(q.getOptions()[i]);
-                optionButtons[i].setVisible(true);
-            }
-        }
+        String[] opciones = preguntaActual.getOptions();
 
-        optionGroup.clearSelection();
-        int prevAnswer = q.getUserAnswer();
-        if (prevAnswer >= 0 && optionButtons[prevAnswer].isVisible()) {
-            optionButtons[prevAnswer].setSelected(true);
-        }
-
-        if (reviewMode) {
-            for (JRadioButton button : optionButtons) {
-                button.setEnabled(false);
-            }
-
-            if (q.isCorrect()) {
-                feedbackLabel.setText("Correcto ✅");
-                feedbackLabel.setForeground(new Color(0, 128, 0));
+        for (int i = 0; i < botonesOpciones.length; i++) {
+            if (i < opciones.length) {
+                botonesOpciones[i].setText(opciones[i]);
+                botonesOpciones[i].setVisible(true);
             } else {
-                feedbackLabel.setText("Incorrecto ❌ - Respuesta correcta: " + q.getOptions()[q.getCorrectAnswerIndex()]);
-                feedbackLabel.setForeground(Color.RED);
-            }
-        } else {
-            feedbackLabel.setText(" ");
-            for (JRadioButton button : optionButtons) {
-                button.setEnabled(true);
+                botonesOpciones[i].setVisible(false);
             }
         }
 
-        prevButton.setEnabled(currentIndex > 0);
-        nextButton.setText(currentIndex == preguntas.size() - 1 ? (reviewMode ? "Cerrar" : "Finalizar") : "Siguiente");
+        grupoOpciones.clearSelection();
+        int respuestaAnterior = preguntaActual.getUserAnswer();
+        if (respuestaAnterior >= 0 && respuestaAnterior < botonesOpciones.length && botonesOpciones[respuestaAnterior].isVisible()) {
+            botonesOpciones[respuestaAnterior].setSelected(true);
+        }
+        if (modoRevision) {
+            Pregunta p = preguntas.get(indiceActual);
+            int correcta = p.getCorrectAnswerIndex();
+            int usuario = p.getUserAnswer();
+
+            for (int i = 0; i < botonesOpciones.length; i++) {
+                JRadioButton boton = botonesOpciones[i];
+                boton.setEnabled(false); // Desactiva selección
+
+                if (i == correcta) {
+                    boton.setBackground(Color.GREEN); // Correcta
+                    boton.setOpaque(true);
+                } else if (i == usuario && usuario != correcta) {
+                    boton.setBackground(Color.RED); // Incorrecta marcada
+                    boton.setOpaque(true);
+                } else {
+                    boton.setBackground(null);
+                    boton.setOpaque(false);
+                }
     }
 
-    private void guardarRespuesta(int selectedIndex) {
-        if (!reviewMode) {
-            Pregunta q = preguntas.get(currentIndex);
-            q.setUserAnswer(selectedIndex);
+    feedbackLabel.setText(usuario == correcta ? "✔ Correcto" : "✘ Incorrecto. La respuesta correcta está en verde.");
+} else {
+    feedbackLabel.setText(""); // Oculta feedback en modo normal
+}
+
+    }
+    
+    private void guardarRespuesta(int indiceSeleccionado) {
+        if (!modoRevision) {
+            preguntas.get(indiceActual).setUserAnswer(indiceSeleccionado);
         }
     }
+    
+    
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-    private void botonAnterior(ActionEvent e) {
-        if (currentIndex > 0) {
-            currentIndex--;
-            actualizarPregunta();
-        }
-    }
+        grupoOpciones = new javax.swing.ButtonGroup();
+        Back = new javax.swing.JPanel();
+        Head = new javax.swing.JPanel();
+        Exit = new javax.swing.JPanel();
+        Cerrar = new javax.swing.JLabel();
+        minimizar = new javax.swing.JLabel();
+        Bottom = new javax.swing.JPanel();
+        SiguientePB = new javax.swing.JLabel();
+        AnteriorPB = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        opcion2 = new javax.swing.JRadioButton();
+        opcion1 = new javax.swing.JRadioButton();
+        opcion3 = new javax.swing.JRadioButton();
+        opcion4 = new javax.swing.JRadioButton();
+        pregunta = new javax.swing.JLabel();
+        progreso = new javax.swing.JLabel();
+        feedbackLabel = new javax.swing.JLabel();
 
-    private void botonSiguiente(ActionEvent e) {
-        Pregunta q = preguntas.get(currentIndex);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationByPlatform(true);
+        setUndecorated(true);
+        setResizable(false);
 
-        if (!reviewMode && q.getUserAnswer() < 0) {
-            JOptionPane.showMessageDialog(this, "Por favor, selecciona una respuesta antes de continuar.", "Respuesta requerida", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        Back.setBackground(new java.awt.Color(31, 30, 35));
+        Back.setPreferredSize(new java.awt.Dimension(770, 400));
+        Back.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        if (currentIndex < preguntas.size() - 1) {
-            currentIndex++;
-            actualizarPregunta();
-        } else {
-            if (reviewMode) {
-                this.dispose();
+        Head.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                HeadMouseDragged(evt);
+            }
+        });
+        Head.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                HeadMousePressed(evt);
+            }
+        });
+
+        Exit.setBackground(new java.awt.Color(31, 30, 35));
+        Exit.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+
+        Cerrar.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        Cerrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrar.png"))); // NOI18N
+        Cerrar.setAlignmentY(0.0F);
+        Cerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Cerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CerrarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                CerrarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                CerrarMouseExited(evt);
+            }
+        });
+
+        minimizar.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        minimizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/min.png"))); // NOI18N
+        minimizar.setAlignmentY(0.0F);
+        minimizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minimizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimizarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                minimizarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                minimizarMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ExitLayout = new javax.swing.GroupLayout(Exit);
+        Exit.setLayout(ExitLayout);
+        ExitLayout.setHorizontalGroup(
+            ExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ExitLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(Cerrar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(minimizar)
+                .addContainerGap(722, Short.MAX_VALUE))
+        );
+        ExitLayout.setVerticalGroup(
+            ExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ExitLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minimizar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout HeadLayout = new javax.swing.GroupLayout(Head);
+        Head.setLayout(HeadLayout);
+        HeadLayout.setHorizontalGroup(
+            HeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HeadLayout.createSequentialGroup()
+                .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        HeadLayout.setVerticalGroup(
+            HeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        Back.add(Head, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 30));
+
+        SiguientePB.setText("sig");
+        SiguientePB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SiguientePBMouseClicked(evt);
+            }
+        });
+
+        AnteriorPB.setText("ante");
+        AnteriorPB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AnteriorPBMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout BottomLayout = new javax.swing.GroupLayout(Bottom);
+        Bottom.setLayout(BottomLayout);
+        BottomLayout.setHorizontalGroup(
+            BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomLayout.createSequentialGroup()
+                .addContainerGap(292, Short.MAX_VALUE)
+                .addComponent(AnteriorPB)
+                .addGap(123, 123, 123)
+                .addComponent(SiguientePB)
+                .addGap(317, 317, 317))
+        );
+        BottomLayout.setVerticalGroup(
+            BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BottomLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SiguientePB)
+                    .addComponent(AnteriorPB))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+
+        Back.add(Bottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 770, 60));
+
+        grupoOpciones.add(opcion2);
+        opcion2.setText("jRadioButton2");
+
+        grupoOpciones.add(opcion1);
+        opcion1.setText("jRadioButton1");
+
+        grupoOpciones.add(opcion3);
+        opcion3.setText("jRadioButton3");
+
+        grupoOpciones.add(opcion4);
+        opcion4.setText("jRadioButton4");
+
+        pregunta.setText("jLabel1");
+
+        progreso.setText("jLabel1");
+
+        feedbackLabel.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(pregunta)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(291, Short.MAX_VALUE)
+                .addComponent(feedbackLabel)
+                .addGap(161, 161, 161)
+                .addComponent(progreso)
+                .addGap(94, 94, 94))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(opcion2)
+                        .addComponent(opcion1)
+                        .addComponent(opcion3)
+                        .addComponent(opcion4))
+                    .addGap(0, 500, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(pregunta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(progreso)
+                    .addComponent(feedbackLabel))
+                .addGap(26, 26, 26))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(0, 106, Short.MAX_VALUE)
+                    .addComponent(opcion2)
+                    .addGap(19, 19, 19)
+                    .addComponent(opcion1)
+                    .addGap(19, 19, 19)
+                    .addComponent(opcion3)
+                    .addGap(19, 19, 19)
+                    .addComponent(opcion4)
+                    .addGap(0, 23, Short.MAX_VALUE)))
+        );
+
+        Back.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 620, 270));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+    
+    private void CerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_CerrarMouseClicked
+
+    private void CerrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseEntered
+        Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrarTarget.png")));
+    }//GEN-LAST:event_CerrarMouseEntered
+
+    private void CerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseExited
+        Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrar.png")));
+    }//GEN-LAST:event_CerrarMouseExited
+
+    private void minimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseClicked
+        setState(Frame.ICONIFIED);
+    }//GEN-LAST:event_minimizarMouseClicked
+
+    private void minimizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseEntered
+        minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/minTarget.png")));
+    }//GEN-LAST:event_minimizarMouseEntered
+
+    private void minimizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseExited
+        minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/min.png")));
+    }//GEN-LAST:event_minimizarMouseExited
+
+    private void HeadMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMouseDragged
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xMouse, y - yMouse);
+    }//GEN-LAST:event_HeadMouseDragged
+
+    private void HeadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_HeadMousePressed
+
+    private void AnteriorPBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnteriorPBMouseClicked
+        if (indiceActual > 0) {
+                indiceActual--;
+                actualizarPregunta();
+            }
+    }//GEN-LAST:event_AnteriorPBMouseClicked
+
+    private void SiguientePBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SiguientePBMouseClicked
+        if (preguntas.get(indiceActual).getUserAnswer() == -1) {
+                JOptionPane.showMessageDialog(this, "Selecciona una respuesta.");
+                return;
+            }
+            if (indiceActual < preguntas.size() - 1) {
+                indiceActual++;
+                actualizarPregunta();
             } else {
-                new ResultadoPantalla(preguntas);
-                this.dispose();
+                if (modoRevision == true){
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Has terminado la prueba.");
+                    new ResultadoPantalla(preguntas).setVisible(true);
+                    this.dispose();
+                }
             }
-        }
-    }
+    }//GEN-LAST:event_SiguientePBMouseClicked
+    
+
+    private int indiceActual = 0;
+    private boolean modoRevision;
+    private List<Pregunta> preguntas;
+    private JRadioButton[] botonesOpciones;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AnteriorPB;
+    private javax.swing.JPanel Back;
+    private javax.swing.JPanel Bottom;
+    private javax.swing.JLabel Cerrar;
+    private javax.swing.JPanel Exit;
+    private javax.swing.JPanel Head;
+    private javax.swing.JLabel SiguientePB;
+    private javax.swing.JLabel feedbackLabel;
+    private javax.swing.ButtonGroup grupoOpciones;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel minimizar;
+    private javax.swing.JRadioButton opcion1;
+    private javax.swing.JRadioButton opcion2;
+    private javax.swing.JRadioButton opcion3;
+    private javax.swing.JRadioButton opcion4;
+    private javax.swing.JLabel pregunta;
+    private javax.swing.JLabel progreso;
+    // End of variables declaration//GEN-END:variables
 }
