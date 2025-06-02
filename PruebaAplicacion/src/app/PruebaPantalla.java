@@ -93,11 +93,11 @@ public class PruebaPantalla extends javax.swing.JFrame {
         Cerrar = new javax.swing.JLabel();
         minimizar = new javax.swing.JLabel();
         Bottom = new javax.swing.JPanel();
-        SiguientePB = new javax.swing.JLabel();
         AnteriorPB = new javax.swing.JLabel();
+        SiguientePB = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        opcion2 = new javax.swing.JRadioButton();
         opcion1 = new javax.swing.JRadioButton();
+        opcion2 = new javax.swing.JRadioButton();
         opcion3 = new javax.swing.JRadioButton();
         opcion4 = new javax.swing.JRadioButton();
         pregunta = new javax.swing.JLabel();
@@ -197,17 +197,19 @@ public class PruebaPantalla extends javax.swing.JFrame {
 
         Back.add(Head, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 30));
 
-        SiguientePB.setText("sig");
-        SiguientePB.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                SiguientePBMouseClicked(evt);
-            }
-        });
+        Bottom.setBackground(new java.awt.Color(31, 30, 35));
 
-        AnteriorPB.setText("ante");
+        AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnterior.png"))); // NOI18N
         AnteriorPB.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 AnteriorPBMouseClicked(evt);
+            }
+        });
+
+        SiguientePB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonSiguiente.png"))); // NOI18N
+        SiguientePB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SiguientePBMouseClicked(evt);
             }
         });
 
@@ -216,90 +218,77 @@ public class PruebaPantalla extends javax.swing.JFrame {
         BottomLayout.setHorizontalGroup(
             BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomLayout.createSequentialGroup()
-                .addContainerGap(292, Short.MAX_VALUE)
+                .addContainerGap(194, Short.MAX_VALUE)
                 .addComponent(AnteriorPB)
-                .addGap(123, 123, 123)
+                .addGap(18, 18, 18)
                 .addComponent(SiguientePB)
-                .addGap(317, 317, 317))
+                .addGap(198, 198, 198))
         );
         BottomLayout.setVerticalGroup(
             BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BottomLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SiguientePB)
-                    .addComponent(AnteriorPB))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AnteriorPB)
+                    .addComponent(SiguientePB))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        Back.add(Bottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 770, 60));
+        Back.add(Bottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 770, 90));
 
-        grupoOpciones.add(opcion2);
-        opcion2.setText("jRadioButton2");
+        jPanel1.setBackground(new java.awt.Color(31, 30, 35));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        opcion1.setBackground(new java.awt.Color(31, 30, 35));
         grupoOpciones.add(opcion1);
+        opcion1.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        opcion1.setForeground(new java.awt.Color(255, 255, 255));
         opcion1.setText("jRadioButton1");
+        opcion1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcion1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(opcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
+        opcion2.setBackground(new java.awt.Color(31, 30, 35));
+        grupoOpciones.add(opcion2);
+        opcion2.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        opcion2.setForeground(new java.awt.Color(255, 255, 255));
+        opcion2.setText("jRadioButton2");
+        opcion2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jPanel1.add(opcion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+
+        opcion3.setBackground(new java.awt.Color(31, 30, 35));
         grupoOpciones.add(opcion3);
+        opcion3.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        opcion3.setForeground(new java.awt.Color(255, 255, 255));
         opcion3.setText("jRadioButton3");
+        jPanel1.add(opcion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
 
+        opcion4.setBackground(new java.awt.Color(31, 30, 35));
         grupoOpciones.add(opcion4);
+        opcion4.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        opcion4.setForeground(new java.awt.Color(255, 255, 255));
         opcion4.setText("jRadioButton4");
+        jPanel1.add(opcion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
 
-        pregunta.setText("jLabel1");
+        pregunta.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        pregunta.setForeground(new java.awt.Color(255, 255, 255));
+        pregunta.setText("Pregunta");
+        jPanel1.add(pregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        progreso.setText("jLabel1");
+        progreso.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        progreso.setForeground(new java.awt.Color(255, 255, 255));
+        progreso.setText("progres");
+        jPanel1.add(progreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 200, -1, -1));
 
-        feedbackLabel.setText("jLabel1");
+        feedbackLabel.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        feedbackLabel.setForeground(new java.awt.Color(255, 255, 255));
+        feedbackLabel.setText("Feedback");
+        jPanel1.add(feedbackLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(pregunta)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(291, Short.MAX_VALUE)
-                .addComponent(feedbackLabel)
-                .addGap(161, 161, 161)
-                .addComponent(progreso)
-                .addGap(94, 94, 94))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(opcion2)
-                        .addComponent(opcion1)
-                        .addComponent(opcion3)
-                        .addComponent(opcion4))
-                    .addGap(0, 500, Short.MAX_VALUE)))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(pregunta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(progreso)
-                    .addComponent(feedbackLabel))
-                .addGap(26, 26, 26))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 106, Short.MAX_VALUE)
-                    .addComponent(opcion2)
-                    .addGap(19, 19, 19)
-                    .addComponent(opcion1)
-                    .addGap(19, 19, 19)
-                    .addComponent(opcion3)
-                    .addGap(19, 19, 19)
-                    .addComponent(opcion4)
-                    .addGap(0, 23, Short.MAX_VALUE)))
-        );
-
-        Back.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 620, 270));
+        Back.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 620, 270));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -375,6 +364,10 @@ public class PruebaPantalla extends javax.swing.JFrame {
                 }
             }
     }//GEN-LAST:event_SiguientePBMouseClicked
+
+    private void opcion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcion1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_opcion1ActionPerformed
     
 
     private int indiceActual = 0;
