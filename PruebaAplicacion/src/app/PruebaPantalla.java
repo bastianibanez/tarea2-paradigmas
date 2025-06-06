@@ -5,24 +5,29 @@ import java.util.List;
 import javax.swing.*;
 import model.Pregunta;
 import model.TipoPregunta;
-
+import java.awt.Point;
+import javax.swing.Timer;
 
 public class PruebaPantalla extends javax.swing.JFrame {
 
     int xMouse, yMouse;
     
-    
-    public PruebaPantalla(List<Pregunta> preguntas, boolean modoRevision) {
+    public PruebaPantalla(List<Pregunta> preguntas, boolean modoRevision, Point loc) {
         initComponents();
         this.preguntas = preguntas;
-        this.modoRevision = modoRevision;       
+        this.modoRevision = modoRevision;
+        this.loc = loc;
         this.botonesOpciones = new JRadioButton[]{opcion1, opcion2, opcion3, opcion4};
-
+        
+        if (loc != null) {
+            this.setLocation(loc);
+        }
+        
         for (int i = 0; i < botonesOpciones.length; i++) {
             final int index = i;
             botonesOpciones[i].addActionListener(e -> guardarRespuesta(index));
         }
-
+        
         actualizarPregunta();
     }
     
@@ -48,6 +53,40 @@ public class PruebaPantalla extends javax.swing.JFrame {
         if (respuestaAnterior >= 0 && respuestaAnterior < botonesOpciones.length && botonesOpciones[respuestaAnterior].isVisible()) {
             botonesOpciones[respuestaAnterior].setSelected(true);
         }
+        if (indiceActual == preguntas.size() - 2){
+            if (term == true){
+                timer = new Timer(70, null); 
+                final int[] frameIndex = {0};
+
+                timer.addActionListener(e -> {
+                    if (frameIndex[0] < fadeOut.length) {
+                        SiguientePB.setIcon(new javax.swing.ImageIcon(getClass().getResource(fadeOut[frameIndex[0]])));
+                        frameIndex[0]++;
+                    } else {
+                        timer.stop();
+                        term = false;
+                    }
+                });
+                timer.start();
+            }
+        }
+        
+        if (indiceActual == preguntas.size() - 1) {
+            timer = new Timer(70, null); 
+            final int[] frameIndex = {0};
+
+            timer.addActionListener(e -> {
+                if (frameIndex[0] < fadeIn.length) {
+                    SiguientePB.setIcon(new javax.swing.ImageIcon(getClass().getResource(fadeIn[frameIndex[0]])));
+                    frameIndex[0]++;
+                } else {
+                    timer.stop();
+                    term = true;
+                }
+            });
+            timer.start();
+        }
+        
         if (modoRevision) {
             Pregunta p = preguntas.get(indiceActual);
             int correcta = p.getCorrectAnswerIndex();
@@ -69,7 +108,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
                 }
     }
 
-    feedbackLabel.setText(usuario == correcta ? "✔ Correcto" : "✘ Incorrecto. La respuesta correcta está en verde.");
+    feedbackLabel.setText(usuario == correcta ? "Correcto" : "Incorrecto. La respuesta correcta está en verde!!.");
 } else {
     feedbackLabel.setText(""); // Oculta feedback en modo normal
 }
@@ -82,7 +121,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
         }
     }
     
-    
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -95,7 +134,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
         Bottom = new javax.swing.JPanel();
         AnteriorPB = new javax.swing.JLabel();
         SiguientePB = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        Menu = new javax.swing.JPanel();
         opcion1 = new javax.swing.JRadioButton();
         opcion2 = new javax.swing.JRadioButton();
         opcion3 = new javax.swing.JRadioButton();
@@ -103,9 +142,9 @@ public class PruebaPantalla extends javax.swing.JFrame {
         pregunta = new javax.swing.JLabel();
         progreso = new javax.swing.JLabel();
         feedbackLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocationByPlatform(true);
         setUndecorated(true);
         setResizable(false);
 
@@ -199,17 +238,31 @@ public class PruebaPantalla extends javax.swing.JFrame {
 
         Bottom.setBackground(new java.awt.Color(31, 30, 35));
 
-        AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnterior.png"))); // NOI18N
+        AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnteriorOs.png"))); // NOI18N
+        AnteriorPB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         AnteriorPB.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 AnteriorPBMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                AnteriorPBMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                AnteriorPBMouseExited(evt);
+            }
         });
 
         SiguientePB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonSiguiente.png"))); // NOI18N
+        SiguientePB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         SiguientePB.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SiguientePBMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                SiguientePBMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                SiguientePBMouseExited(evt);
             }
         });
 
@@ -218,11 +271,11 @@ public class PruebaPantalla extends javax.swing.JFrame {
         BottomLayout.setHorizontalGroup(
             BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomLayout.createSequentialGroup()
-                .addContainerGap(194, Short.MAX_VALUE)
-                .addComponent(AnteriorPB)
-                .addGap(18, 18, 18)
+                .addGap(297, 297, 297)
+                .addComponent(AnteriorPB, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
                 .addComponent(SiguientePB)
-                .addGap(198, 198, 198))
+                .addContainerGap(313, Short.MAX_VALUE))
         );
         BottomLayout.setVerticalGroup(
             BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,64 +284,68 @@ public class PruebaPantalla extends javax.swing.JFrame {
                 .addGroup(BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(AnteriorPB)
                     .addComponent(SiguientePB))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         Back.add(Bottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 770, 90));
 
-        jPanel1.setBackground(new java.awt.Color(31, 30, 35));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Menu.setBackground(new java.awt.Color(31, 30, 35));
+        Menu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         opcion1.setBackground(new java.awt.Color(31, 30, 35));
         grupoOpciones.add(opcion1);
-        opcion1.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        opcion1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         opcion1.setForeground(new java.awt.Color(255, 255, 255));
         opcion1.setText("jRadioButton1");
-        opcion1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opcion1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(opcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+        opcion1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        opcion1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        Menu.add(opcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, 30));
 
         opcion2.setBackground(new java.awt.Color(31, 30, 35));
         grupoOpciones.add(opcion2);
-        opcion2.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        opcion2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         opcion2.setForeground(new java.awt.Color(255, 255, 255));
         opcion2.setText("jRadioButton2");
+        opcion2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         opcion2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jPanel1.add(opcion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+        Menu.add(opcion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, 30));
 
         opcion3.setBackground(new java.awt.Color(31, 30, 35));
         grupoOpciones.add(opcion3);
-        opcion3.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        opcion3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         opcion3.setForeground(new java.awt.Color(255, 255, 255));
         opcion3.setText("jRadioButton3");
-        jPanel1.add(opcion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
+        opcion3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Menu.add(opcion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, 30));
 
         opcion4.setBackground(new java.awt.Color(31, 30, 35));
         grupoOpciones.add(opcion4);
-        opcion4.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        opcion4.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         opcion4.setForeground(new java.awt.Color(255, 255, 255));
         opcion4.setText("jRadioButton4");
-        jPanel1.add(opcion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
+        opcion4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Menu.add(opcion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, 30));
 
-        pregunta.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        pregunta.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         pregunta.setForeground(new java.awt.Color(255, 255, 255));
+        pregunta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pregunta.setText("Pregunta");
-        jPanel1.add(pregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        Menu.add(pregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 60));
 
-        progreso.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        progreso.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         progreso.setForeground(new java.awt.Color(255, 255, 255));
-        progreso.setText("progres");
-        jPanel1.add(progreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 200, -1, -1));
+        progreso.setText("Pregunta 0 de 0 ");
+        Menu.add(progreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, 110, 20));
 
-        feedbackLabel.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        feedbackLabel.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         feedbackLabel.setForeground(new java.awt.Color(255, 255, 255));
         feedbackLabel.setText("Feedback");
-        jPanel1.add(feedbackLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, -1, -1));
+        Menu.add(feedbackLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 230, -1, 30));
 
-        Back.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 620, 270));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BarraProgreso.png"))); // NOI18N
+        Menu.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(505, 75, -1, -1));
+
+        Back.add(Menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 690, 270));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -332,6 +389,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         this.setLocation(x - xMouse, y - yMouse);
+        loc = this.getLocation();
     }//GEN-LAST:event_HeadMouseDragged
 
     private void HeadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMousePressed
@@ -341,6 +399,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
 
     private void AnteriorPBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnteriorPBMouseClicked
         if (indiceActual > 0) {
+                AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnterior.png")));
                 indiceActual--;
                 actualizarPregunta();
             }
@@ -351,6 +410,8 @@ public class PruebaPantalla extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Selecciona una respuesta.");
                 return;
             }
+            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnterior.png")));
+            AnteriorPB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
             if (indiceActual < preguntas.size() - 1) {
                 indiceActual++;
                 actualizarPregunta();
@@ -359,17 +420,69 @@ public class PruebaPantalla extends javax.swing.JFrame {
                     this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Has terminado la prueba.");
-                    new ResultadoPantalla(preguntas).setVisible(true);
+                    new ResultadoPantalla(preguntas, loc).setVisible(true);
                     this.dispose();
                 }
             }
     }//GEN-LAST:event_SiguientePBMouseClicked
 
-    private void opcion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcion1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_opcion1ActionPerformed
-    
+    private void SiguientePBMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SiguientePBMouseEntered
+        if (indiceActual == preguntas.size() - 1){
+            if (term == true) {
+                SiguientePB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonTerminarTarget.png")));
+            }
+        }
+        else {
+            SiguientePB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonSiguienteTarget.png")));
+        }
+        
+        
+    }//GEN-LAST:event_SiguientePBMouseEntered
 
+    private void SiguientePBMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SiguientePBMouseExited
+        if (indiceActual == preguntas.size() - 1) {
+            if (term == true){
+                SiguientePB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonTerminar5.png")));
+            }
+        }
+        else {
+            SiguientePB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonSiguiente.png")));
+        }
+        
+    }//GEN-LAST:event_SiguientePBMouseExited
+
+    private void AnteriorPBMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnteriorPBMouseEntered
+        if (indiceActual > 0){
+            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnteriorTarget.png")));
+        }
+    }//GEN-LAST:event_AnteriorPBMouseEntered
+
+    private void AnteriorPBMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnteriorPBMouseExited
+        if (indiceActual > 0) {
+            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnterior.png")));
+        }
+        else {
+            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnteriorOs.png")));
+            AnteriorPB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR)); 
+        }
+    }//GEN-LAST:event_AnteriorPBMouseExited
+    private Timer timer;
+    private boolean term;
+    private final String[] fadeIn = {
+    "/imagCom/BotonTerminar1.png",
+    "/imagCom/BotonTerminar2.png",
+    "/imagCom/BotonTerminar3.png",
+    "/imagCom/BotonTerminar4.png",
+    "/imagCom/BotonTerminar5.png"
+    };
+    private final String[] fadeOut = {
+    "/imagCom/BotonTerminar5.png",
+    "/imagCom/BotonTerminar4.png",
+    "/imagCom/BotonTerminar3.png",
+    "/imagCom/BotonTerminar2.png",
+    "/imagCom/BotonTerminar1.png"
+    };
+    private Point loc;
     private int indiceActual = 0;
     private boolean modoRevision;
     private List<Pregunta> preguntas;
@@ -381,10 +494,11 @@ public class PruebaPantalla extends javax.swing.JFrame {
     private javax.swing.JLabel Cerrar;
     private javax.swing.JPanel Exit;
     private javax.swing.JPanel Head;
+    private javax.swing.JPanel Menu;
     private javax.swing.JLabel SiguientePB;
     private javax.swing.JLabel feedbackLabel;
     private javax.swing.ButtonGroup grupoOpciones;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel minimizar;
     private javax.swing.JRadioButton opcion1;
     private javax.swing.JRadioButton opcion2;

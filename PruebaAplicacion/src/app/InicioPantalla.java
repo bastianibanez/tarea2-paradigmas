@@ -8,6 +8,7 @@ import java.util.Locale;
 import javax.swing.*;
 import model.Pregunta;
 import utils.CargaArchivo;
+import java.awt.Point;
 
 public class InicioPantalla extends javax.swing.JFrame {
 
@@ -43,6 +44,7 @@ public class InicioPantalla extends javax.swing.JFrame {
         barra2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(0, 0));
         setLocationByPlatform(true);
         setUndecorated(true);
         setResizable(false);
@@ -139,6 +141,7 @@ public class InicioPantalla extends javax.swing.JFrame {
         Botones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         CargarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonCARGAR.png"))); // NOI18N
+        CargarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         CargarB.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 CargarBMouseClicked(evt);
@@ -155,6 +158,7 @@ public class InicioPantalla extends javax.swing.JFrame {
         Iniciar.setBackground(new java.awt.Color(179, 179, 179));
         Iniciar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonINICIARos.png"))); // NOI18N
+        Iniciar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Iniciar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 IniciarMouseClicked(evt);
@@ -274,6 +278,7 @@ public class InicioPantalla extends javax.swing.JFrame {
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         this.setLocation(x - xMouse, y - yMouse);
+        loc = this.getLocation();
     }//GEN-LAST:event_HeadMouseDragged
 
     private void CerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseClicked
@@ -301,8 +306,9 @@ public class InicioPantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_minimizarMouseExited
 
     private void IniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IniciarMouseClicked
+        loc = this.getLocation();
         if (pruebaCargada != false){
-            new PruebaPantalla(preguntas, false).setVisible(true);
+            new PruebaPantalla(preguntas, false, loc).setVisible(true);
             this.dispose();
         }
     }//GEN-LAST:event_IniciarMouseClicked
@@ -331,6 +337,7 @@ public class InicioPantalla extends javax.swing.JFrame {
                 EstadisticaR.setText("Multiple: " + multipleCount + " Verdadero/Falso: " + tfCount + " Total: " + preguntas.size());
                 pruebaCargada = true;
                 Iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonINICIAR.png")));
+                Iniciar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error al cargar archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -347,6 +354,7 @@ public class InicioPantalla extends javax.swing.JFrame {
     private void IniciarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IniciarMouseExited
         if (pruebaCargada != false){
             Iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonINICIAR.png")));
+            
         }
     }//GEN-LAST:event_IniciarMouseExited
 
@@ -357,6 +365,8 @@ public class InicioPantalla extends javax.swing.JFrame {
     private void CargarBMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CargarBMouseExited
         CargarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonCARGAR.png")));
     }//GEN-LAST:event_CargarBMouseExited
+    
+    private Point loc;
     private boolean pruebaCargada = false;
     private List<Pregunta> preguntas;
     // Variables declaration - do not modify//GEN-BEGIN:variables

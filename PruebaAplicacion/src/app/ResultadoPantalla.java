@@ -4,6 +4,16 @@
  */
 package app;
 
+
+import java.awt.*;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.swing.*;
+import model.Pregunta;
+import model.TipoPregunta;
+import java.awt.Point;
+
 /**
  *
  * @author Bastián
@@ -13,9 +23,10 @@ public class ResultadoPantalla extends javax.swing.JFrame {
     /**
      * Creates new form ResultadoPantalla
      */
-    public ResultadoPantalla() {
+    public ResultadoPantalla(List<Pregunta> preguntas, Point loc) {
         initComponents();
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,12 +91,17 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ResultadoPantalla().setVisible(true);
             }
+
         });
+        JButton reviewButton = new JButton("Revisar respuestas");
+        reviewButton.addActionListener(e -> new PruebaPantalla(preguntas, true, loc).setVisible(true);
+        this.dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
