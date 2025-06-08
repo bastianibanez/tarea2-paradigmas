@@ -4,10 +4,14 @@
  */
 package app;
 
-import java.awt.Point;
-import java.util.List;
-import model.Pregunta;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.swing.*;
+import model.Pregunta;
+import model.TipoPregunta;
 
 
 
@@ -18,8 +22,8 @@ import java.awt.*;
 public class ResultadoPantalla extends javax.swing.JFrame {
 
     int xMouse, yMouse;
-    
     public ResultadoPantalla(List<Pregunta> preguntas, Point loc) {
+        setUndecorated(true);
         initComponents();
         this.preguntas = preguntas;
         this.loc = loc;
@@ -27,6 +31,37 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         if (loc != null) {
             this.setLocation(loc);
         }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Resumen de resultados:\n\n");
+
+        Map<TipoPregunta, List<Pregunta>> grouped = preguntas.stream()
+            .collect(Collectors.groupingBy(Pregunta::getType));
+
+        for (TipoPregunta type : TipoPregunta.values()) {
+            List<Pregunta> list = grouped.getOrDefault(type, List.of());
+            long correctCount = list.stream().filter(Pregunta::isCorrect).count();
+            long total = list.size();
+            long incorrectCount = total - correctCount;
+
+            double correctPercent = total == 0 ? 0 : (correctCount * 100.0 / total);
+            double incorrectPercent = total == 0 ? 0 : (incorrectCount * 100.0 / total);
+
+            sb.append(String.format("%-15s: Correctas: %2d / %2d (%.1f%%) | Incorrectas: %2d (%.1f%%)\n",
+                type == TipoPregunta.MULTIPLE ? "Opción múltiple" : "Verdadero/Falso",
+                correctCount, total, correctPercent,
+                incorrectCount, incorrectPercent));
+}
+
+        sb.append("\nTotal preguntas: ").append(preguntas.size());
+        long totalCorrect = preguntas.stream().filter(Pregunta::isCorrect).count();
+        long totalIncorrect = preguntas.size() - totalCorrect;
+        sb.append("\nTotal correctas: ").append(totalCorrect);
+        sb.append("\nTotal incorrectas: ").append(totalIncorrect);
+        sb.append("\nPorcentaje total: ")
+            .append(String.format("%.1f%%", (totalCorrect * 100.0 / preguntas.size())));
+
+
+        ResultadoTexto.setText(sb.toString());
     }
 
     /**
@@ -45,6 +80,8 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         minimizar = new javax.swing.JLabel();
         Bottom = new javax.swing.JPanel();
         BotonPrueba = new javax.swing.JLabel();
+        Medium = new javax.swing.JPanel();
+        ResultadoTexto = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,7 +106,7 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         Cerrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrar.png"))); // NOI18N
         Cerrar.setAlignmentY(0.0F);
-        Cerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Cerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Cerrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 CerrarMouseClicked(evt);
@@ -86,7 +123,7 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         minimizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/min.png"))); // NOI18N
         minimizar.setAlignmentY(0.0F);
-        minimizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minimizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         minimizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 minimizarMouseClicked(evt);
@@ -137,26 +174,61 @@ public class ResultadoPantalla extends javax.swing.JFrame {
 
         Bottom.setBackground(new java.awt.Color(31, 30, 35));
 
-        BotonPrueba.setText("jLabel1");
+        BotonPrueba.setBackground(new java.awt.Color(31, 30, 35));
+        BotonPrueba.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
+        BotonPrueba.setForeground(new java.awt.Color(242, 242, 242));
+        BotonPrueba.setText("REVISAR PRUEBA");
+        BotonPrueba.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonPruebaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout BottomLayout = new javax.swing.GroupLayout(Bottom);
         Bottom.setLayout(BottomLayout);
         BottomLayout.setHorizontalGroup(
             BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomLayout.createSequentialGroup()
-                .addContainerGap(337, Short.MAX_VALUE)
-                .addComponent(BotonPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(331, 331, 331))
+            .addGroup(BottomLayout.createSequentialGroup()
+                .addGap(281, 281, 281)
+                .addComponent(BotonPrueba)
+                .addContainerGap(296, Short.MAX_VALUE))
         );
         BottomLayout.setVerticalGroup(
             BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BottomLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomLayout.createSequentialGroup()
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addComponent(BotonPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
 
         Back.add(Bottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 770, 90));
+
+        Medium.setBackground(new java.awt.Color(31, 30, 35));
+
+        ResultadoTexto.setBackground(new java.awt.Color(31, 30, 35));
+        ResultadoTexto.setColumns(20);
+        ResultadoTexto.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        ResultadoTexto.setForeground(new java.awt.Color(242, 242, 242));
+        ResultadoTexto.setRows(5);
+
+        javax.swing.GroupLayout MediumLayout = new javax.swing.GroupLayout(Medium);
+        Medium.setLayout(MediumLayout);
+        MediumLayout.setHorizontalGroup(
+            MediumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MediumLayout.createSequentialGroup()
+                .addGap(102, 102, 102)
+                .addComponent(ResultadoTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(113, Short.MAX_VALUE))
+        );
+        MediumLayout.setVerticalGroup(
+            MediumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MediumLayout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(ResultadoTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
+        );
+
+        Back.add(Medium, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 770, 280));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,6 +280,11 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         yMouse = evt.getY();
     }//GEN-LAST:event_HeadMousePressed
 
+    private void BotonPruebaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonPruebaMouseClicked
+        new PruebaPantalla(preguntas, true, loc).setVisible(true);
+        this.dispose();        
+    }//GEN-LAST:event_BotonPruebaMouseClicked
+
     private Point loc;
     private List<Pregunta> preguntas;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -217,6 +294,8 @@ public class ResultadoPantalla extends javax.swing.JFrame {
     private javax.swing.JLabel Cerrar;
     private javax.swing.JPanel Exit;
     private javax.swing.JPanel Head;
+    private javax.swing.JPanel Medium;
+    private javax.swing.JTextArea ResultadoTexto;
     private javax.swing.JLabel minimizar;
     // End of variables declaration//GEN-END:variables
 }
