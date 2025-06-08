@@ -1,4 +1,4 @@
-package app;
+    package app;
 
 import java.awt.*;
 import java.util.List;
@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 import model.Pregunta;
 import model.TipoPregunta;
+import java.awt.Point;
 
-public class ResultadoPantalla extends JFrame {
+public class ResultadoPantalla1 extends JFrame {
     
-    public ResultadoPantalla(List<Pregunta> preguntas) {
+    public ResultadoPantalla1(List<Pregunta> preguntas, Point loc) {
         super("Resumen de resultados");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,7 +57,7 @@ public class ResultadoPantalla extends JFrame {
         JButton reviewButton = new JButton("Revisar respuestas");
         reviewButton.addActionListener(e -> {
             /*new PruebaPantalla(questions, true);*/
-            new PruebaPantalla(preguntas, true).setVisible(true);
+            new PruebaPantalla(preguntas, true, loc).setVisible(true);
             this.dispose();
         });
 

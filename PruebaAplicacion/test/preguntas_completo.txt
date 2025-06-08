@@ -1,9 +1,0 @@
-Asignatura: Paradigmas de Programacion
-Evaluación: Prueba Unidad 2
-
-¿Es Python un lenguaje interpretado?|VERDADERO_FALSO|ENTENDER|¿Es Python un lenguaje interpretado?|Verdadero|Falso|1
-¿La Tierra gira alrededor del Sol?|VERDADERO_FALSO|RECORDAR|¿La Tierra gira alrededor del Sol?|Verdadero|Falso|1
-¿Los pingüinos pueden volar?|VERDADERO_FALSO|APLICAR|¿Los pingüinos pueden volar?|Verdadero|Falso|2
-¿Cuál es el lenguaje que se ejecuta en navegadores web?|MULTIPLE|ENTENDER|¿Cuál es el lenguaje que se ejecuta en navegadores web?|Python|Java|JavaScript|C++|3
-¿Quién escribió "Cien años de soledad"?|MULTIPLE|RECORDAR|¿Quién escribió "Cien años de soledad"?|Pablo Neruda|Gabriel García Márquez|Mario Vargas Llosa|Isabel Allende|2
-¿Cuánto es 5 x 6?|MULTIPLE|APLICAR|¿Cuánto es 5 x 6?|11|30|60|56|2

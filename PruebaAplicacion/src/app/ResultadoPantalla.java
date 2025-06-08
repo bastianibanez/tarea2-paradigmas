@@ -4,29 +4,30 @@
  */
 package app;
 
-
-import java.awt.*;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.swing.*;
-import model.Pregunta;
-import model.TipoPregunta;
 import java.awt.Point;
+import java.util.List;
+import model.Pregunta;
+import java.awt.*;
+
+
 
 /**
  *
- * @author Bastián
+ * @author Administrator
  */
 public class ResultadoPantalla extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ResultadoPantalla
-     */
+    int xMouse, yMouse;
+    
     public ResultadoPantalla(List<Pregunta> preguntas, Point loc) {
         initComponents();
+        this.preguntas = preguntas;
+        this.loc = loc;
+        
+        if (loc != null) {
+            this.setLocation(loc);
+        }
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,75 +38,185 @@ public class ResultadoPantalla extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bg = new javax.swing.JPanel();
-        resultados = new javax.swing.JLabel();
+        Back = new javax.swing.JPanel();
+        Head = new javax.swing.JPanel();
+        Exit = new javax.swing.JPanel();
+        Cerrar = new javax.swing.JLabel();
+        minimizar = new javax.swing.JLabel();
+        Bottom = new javax.swing.JPanel();
+        BotonPrueba = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        bg.setBackground(new java.awt.Color(31, 30, 35));
-        bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Back.setBackground(new java.awt.Color(31, 30, 35));
+        Back.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        resultados.setForeground(new java.awt.Color(242, 242, 242));
-        resultados.setText("RESULTADOS");
-        resultados.setAutoscrolls(true);
-        bg.add(resultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+        Head.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                HeadMouseDragged(evt);
+            }
+        });
+        Head.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                HeadMousePressed(evt);
+            }
+        });
+
+        Exit.setBackground(new java.awt.Color(31, 30, 35));
+        Exit.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+
+        Cerrar.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        Cerrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrar.png"))); // NOI18N
+        Cerrar.setAlignmentY(0.0F);
+        Cerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Cerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CerrarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                CerrarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                CerrarMouseExited(evt);
+            }
+        });
+
+        minimizar.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        minimizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/min.png"))); // NOI18N
+        minimizar.setAlignmentY(0.0F);
+        minimizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minimizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimizarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                minimizarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                minimizarMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ExitLayout = new javax.swing.GroupLayout(Exit);
+        Exit.setLayout(ExitLayout);
+        ExitLayout.setHorizontalGroup(
+            ExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ExitLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(Cerrar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(minimizar)
+                .addContainerGap(722, Short.MAX_VALUE))
+        );
+        ExitLayout.setVerticalGroup(
+            ExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ExitLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minimizar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout HeadLayout = new javax.swing.GroupLayout(Head);
+        Head.setLayout(HeadLayout);
+        HeadLayout.setHorizontalGroup(
+            HeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HeadLayout.createSequentialGroup()
+                .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        HeadLayout.setVerticalGroup(
+            HeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        Back.add(Head, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 30));
+
+        Bottom.setBackground(new java.awt.Color(31, 30, 35));
+
+        BotonPrueba.setText("jLabel1");
+
+        javax.swing.GroupLayout BottomLayout = new javax.swing.GroupLayout(Bottom);
+        Bottom.setLayout(BottomLayout);
+        BottomLayout.setHorizontalGroup(
+            BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomLayout.createSequentialGroup()
+                .addContainerGap(337, Short.MAX_VALUE)
+                .addComponent(BotonPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(331, 331, 331))
+        );
+        BottomLayout.setVerticalGroup(
+            BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BottomLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(BotonPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        Back.add(Bottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 770, 90));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ResultadoPantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ResultadoPantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ResultadoPantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ResultadoPantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void CerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_CerrarMouseClicked
 
+    private void CerrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseEntered
+        Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrarTarget.png")));
+    }//GEN-LAST:event_CerrarMouseEntered
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ResultadoPantalla().setVisible(true);
-            }
+    private void CerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseExited
+        Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrar.png")));
+    }//GEN-LAST:event_CerrarMouseExited
 
-        });
-        JButton reviewButton = new JButton("Revisar respuestas");
-        reviewButton.addActionListener(e -> new PruebaPantalla(preguntas, true, loc).setVisible(true);
-        this.dispose();
-    }
+    private void minimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseClicked
+        setState(Frame.ICONIFIED);
+    }//GEN-LAST:event_minimizarMouseClicked
 
+    private void minimizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseEntered
+        minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/minTarget.png")));
+    }//GEN-LAST:event_minimizarMouseEntered
+
+    private void minimizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseExited
+        minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/min.png")));
+    }//GEN-LAST:event_minimizarMouseExited
+
+    private void HeadMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMouseDragged
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xMouse, y - yMouse);
+        loc = this.getLocation();
+    }//GEN-LAST:event_HeadMouseDragged
+
+    private void HeadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_HeadMousePressed
+
+    private Point loc;
+    private List<Pregunta> preguntas;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel bg;
-    private javax.swing.JLabel resultados;
+    private javax.swing.JPanel Back;
+    private javax.swing.JLabel BotonPrueba;
+    private javax.swing.JPanel Bottom;
+    private javax.swing.JLabel Cerrar;
+    private javax.swing.JPanel Exit;
+    private javax.swing.JPanel Head;
+    private javax.swing.JLabel minimizar;
     // End of variables declaration//GEN-END:variables
 }
