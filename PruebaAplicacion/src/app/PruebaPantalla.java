@@ -1,17 +1,28 @@
 package app;
 
-import java.awt.*;
-import java.util.List;
-import javax.swing.*;
-import model.Pregunta;
-import model.TipoPregunta;
-import java.awt.Point;
-import javax.swing.Timer;
+import java.awt.*; // Para gráficos y ubicación.
+import java.util.List; // Para la lista de preguntas.
+import javax.swing.*; // Clases principales de Swing.
+import model.Pregunta; // Clase Pregunta.
+import model.TipoPregunta; // Enum TipoPregunta.
+import java.awt.Point; // Para la posición de la ventana.
+import javax.swing.Timer; // Para las animaciones de botones.
 
+/**
+ * Pantalla donde el usuario interactúa con las preguntas de la prueba o las revisa.
+ * Maneja la navegación, la visualización de preguntas y opciones, y la retroalimentación.
+ */
 public class PruebaPantalla extends javax.swing.JFrame {
-
+    
+    // Variables para mover la ventana.
     int xMouse, yMouse;
     
+    /**
+     * Constructor de la pantalla de prueba/revisión.
+     * @param preguntas La lista de preguntas a usar.
+     * @param modoRevision Indica si es modo revisión.
+     * @param loc La ubicación previa de la ventana.
+     */
     public PruebaPantalla(List<Pregunta> preguntas, boolean modoRevision, Point loc) {
         initComponents();
         this.preguntas = preguntas;
@@ -20,25 +31,32 @@ public class PruebaPantalla extends javax.swing.JFrame {
         this.botonesOpciones = new JRadioButton[]{opcion1, opcion2, opcion3, opcion4};
         
         if (loc != null) {
-            this.setLocation(loc);
+            this.setLocation(loc);// Establece la posición de la ventana.
         }
         
+        // Añade un Listener a cada botón de opción para guardar la respuesta.
         for (int i = 0; i < botonesOpciones.length; i++) {
             final int index = i;
             botonesOpciones[i].addActionListener(e -> guardarRespuesta(index));
         }
         
-        actualizarPregunta();
+        actualizarPregunta();// Muestra la primera pregunta.
     }
     
+    /**
+     * Actualiza la UI para mostrar la pregunta actual, sus opciones, progreso y feedback.
+     * Controla la visibilidad de los botones de navegación y "Terminar".
+     */
     private void actualizarPregunta() {
         Pregunta preguntaActual = preguntas.get(indiceActual);
-
+        
+        // Actualiza el texto de la pregunta y el progreso.
         pregunta.setText("(" + preguntaActual.getType() + " - " + preguntaActual.getLevel() + ") " + preguntaActual.getText());
         progreso.setText("Pregunta " + (indiceActual + 1) + " de " + preguntas.size());
-
+        
         String[] opciones = preguntaActual.getOptions();
-
+        
+        // Configura los botones de opción.
         for (int i = 0; i < botonesOpciones.length; i++) {
             if (i < opciones.length) {
                 botonesOpciones[i].setText(opciones[i]);
@@ -48,7 +66,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
             }
         }
 
-        grupoOpciones.clearSelection();
+        grupoOpciones.clearSelection();// Deselecciona opciones anteriores.
         int respuestaAnterior = preguntaActual.getUserAnswer();
         if (respuestaAnterior >= 0 && respuestaAnterior < botonesOpciones.length && botonesOpciones[respuestaAnterior].isVisible()) {
             botonesOpciones[respuestaAnterior].setSelected(true);
@@ -86,7 +104,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
             });
             timer.start();
         }
-        
+        // Lógica específica para el modo revisión vs. modo prueba.
         if (modoRevision) {
             Pregunta p = preguntas.get(indiceActual);
             int correcta = p.getCorrectAnswerIndex();
@@ -94,7 +112,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
 
             for (int i = 0; i < botonesOpciones.length; i++) {
                 JRadioButton boton = botonesOpciones[i];
-                boton.setEnabled(false); // Desactiva selección
+                boton.setEnabled(false); // Deshabilita botones en modo revisión.
 
                 if (i == correcta) {
                     boton.setBackground(Color.GREEN); // Correcta
@@ -467,7 +485,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_AnteriorPBMouseExited
     private Timer timer;
-    private boolean term;
+    private boolean term;// Indica si el botón Terminar está visible.
     private final String[] fadeIn = {
     "/imagCom/BotonTerminar1.png",
     "/imagCom/BotonTerminar2.png",
@@ -482,11 +500,11 @@ public class PruebaPantalla extends javax.swing.JFrame {
     "/imagCom/BotonTerminar2.png",
     "/imagCom/BotonTerminar1.png"
     };
-    private Point loc;
-    private int indiceActual = 0;
-    private boolean modoRevision;
-    private List<Pregunta> preguntas;
-    private JRadioButton[] botonesOpciones;
+    private Point loc; // Ubicación de la ventana.
+    private int indiceActual = 0; // Índice de la pregunta mostrada actualmente.
+    private boolean modoRevision; // True si está en modo revisión, false si es prueba.
+    private List<Pregunta> preguntas; // Lista de todas las preguntas.
+    private JRadioButton[] botonesOpciones; // Array de JRadioButtons para las opciones.
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AnteriorPB;
     private javax.swing.JPanel Back;
