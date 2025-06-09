@@ -10,8 +10,15 @@ import model.Pregunta; // La clase que representa una pregunta.
 import model.TipoPregunta; // El enum para los tipos de pregunta (Múltiple, V/F).
 
 /**
- * Pantalla que muestra los resultados de la prueba.
- * Calcula y exhibe el número de respuestas correctas e incorrectas por tipo de pregunta.
+ * Pantalla de Resultados (`ResultadoPantalla`):
+ * Esta clase representa la ventana de la interfaz gráfica de usuario (GUI)
+ * que se muestra al finalizar una evaluación. Su propósito principal es:
+ * 1. Presentar un resumen detallado del desempeño del estudiante.
+ * 2. Calcular y exhibir el número y porcentaje de respuestas correctas e incorrectas,
+ * desglosado por cada `TipoPregunta` (Opción Múltiple y Verdadero/Falso).
+ * 3. Ofrecer la opción de revisar la prueba nuevamente.
+ *
+ * Hereda de `javax.swing.JFrame` para crear una ventana principal.
  */
 public class ResultadoPantalla extends javax.swing.JFrame {
     // Variables para mover la ventana sin bordes (xMouse, yMouse)
@@ -41,30 +48,42 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         
         // Itera sobre cada tipo de pregunta para calcular estadísticas
         for (TipoPregunta type : TipoPregunta.values()) {
+            // Obtiene la lista de preguntas para el tipo actual. Si no hay preguntas de ese tipo,
+            // retorna una lista vacía para evitar errores de NullPointerException.
             List<Pregunta> list = grouped.getOrDefault(type, List.of());
+            // Calcula el número de respuestas correctas para el tipo de pregunta actual.
             long correctCount = list.stream().filter(Pregunta::isCorrect).count();
+            // Calcula el número total de preguntas de este tipo.
             long total = list.size();
+            // Calcula el número de respuestas incorrectas.
             long incorrectCount = total - correctCount;
 
+            // Calcula los porcentajes de respuestas correctas e incorrectas.
+            // Se maneja el caso de 'total == 0' para evitar división por cero.
             double correctPercent = total == 0 ? 0 : (correctCount * 100.0 / total);
             double incorrectPercent = total == 0 ? 0 : (incorrectCount * 100.0 / total);
 
+            // Añade la línea de resumen formateada para el tipo de pregunta actual al `StringBuilder`.
+            // Se usa String.format para una salida limpia y alineada.
             sb.append(String.format("%-15s: Correctas: %2d / %2d (%.1f%%) | Incorrectas: %2d (%.1f%%)\n",
-                type == TipoPregunta.MULTIPLE ? "Opción múltiple" : "Verdadero/Falso",
+                type == TipoPregunta.MULTIPLE ? "Opción múltiple" : "Verdadero/Falso", // Texto descriptivo para el tipo.
                 correctCount, total, correctPercent,
                 incorrectCount, incorrectPercent));
 }
 
-        sb.append("\nTotal preguntas: ").append(preguntas.size());
-        long totalCorrect = preguntas.stream().filter(Pregunta::isCorrect).count();
-        long totalIncorrect = preguntas.size() - totalCorrect;
+        // --- Cálculos de estadísticas generales de la prueba ---
+        sb.append("\nTotal preguntas: ").append(preguntas.size()); // Añade el número total de preguntas en la evaluación.
+        long totalCorrect = preguntas.stream().filter(Pregunta::isCorrect).count(); // Calcula el total de respuestas correctas en toda la prueba.
+        long totalIncorrect = preguntas.size() - totalCorrect; // Calcula el total de respuestas incorrectas.
         sb.append("\nTotal correctas: ").append(totalCorrect);
         sb.append("\nTotal incorrectas: ").append(totalIncorrect);
+        
+        // Calcula y añade el porcentaje total de respuestas correctas.
         sb.append("\nPorcentaje total: ")
             .append(String.format("%.1f%%", (totalCorrect * 100.0 / preguntas.size())));
 
-        
-        ResultadoTexto.setText(sb.toString());// Muestra el resumen en el área de texto.
+        // Asigna el texto generado al componente JTextArea `ResultadoTexto` para su visualización.
+        ResultadoTexto.setText(sb.toString());
     }
     
 
@@ -241,51 +260,103 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Manejador de evento al hacer clic en el botón "Cerrar".
+     * Termina la ejecución de la aplicación.
+     */
     private void CerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseClicked
-        System.exit(0);
+        System.exit(0);// Sale de la aplicación.
     }//GEN-LAST:event_CerrarMouseClicked
 
+     /**
+     * Manejador de evento al entrar el ratón en el botón "Cerrar".
+     * Cambia el ícono para indicar que el botón es interactivo.
+     */
     private void CerrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseEntered
         Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrarTarget.png")));
     }//GEN-LAST:event_CerrarMouseEntered
 
+     /**
+     * Manejador de evento al salir el ratón del botón "Cerrar".
+     * Restaura el ícono original del botón.
+     */
     private void CerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseExited
         Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrar.png")));
     }//GEN-LAST:event_CerrarMouseExited
 
+    /**
+     * Manejador de evento al hacer clic en el botón "Minimizar".
+     * Minimiza la ventana a la barra de tareas.
+     */
     private void minimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseClicked
         setState(Frame.ICONIFIED);
     }//GEN-LAST:event_minimizarMouseClicked
 
+     /**
+     * Manejador de evento al entrar el ratón en el botón "Minimizar".
+     * Cambia el ícono para indicar que el botón es interactivo.
+     */
     private void minimizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseEntered
         minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/minTarget.png")));
     }//GEN-LAST:event_minimizarMouseEntered
 
+    /**
+     * Manejador de evento al salir el ratón del botón "Minimizar".
+     * Restaura el ícono original del botón.
+     */
     private void minimizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseExited
         minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/min.png")));
     }//GEN-LAST:event_minimizarMouseExited
 
-    private void HeadMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMouseDragged
-        int x = evt.getXOnScreen();
-        int y = evt.getYOnScreen();
-        this.setLocation(x - xMouse, y - yMouse);
-        loc = this.getLocation();
+    /**
+     * Manejador de evento para arrastrar la ventana.
+     * Permite mover la ventana por la pantalla al arrastrar el panel 'Head'.
+     *
+     * @param evt El evento del ratón que indica el arrastre.
+     */
+    private void HeadMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMouseD\ragged
+        int x = evt.getXOnScreen();// Coordenada X actual del puntero en la pantalla.
+        int y = evt.getYOnScreen();// Coordenada Y actual del puntero en la pantalla.
+        this.setLocation(x - xMouse, y - yMouse);// Establece la nueva posición de la ventana.
+        loc = this.getLocation();// Actualiza la ubicación guardada de la ventana.
     }//GEN-LAST:event_HeadMouseDragged
 
+    /**
+     * Manejador de evento para presionar el ratón.
+     * Registra las coordenadas iniciales del clic para calcular el desplazamiento al arrastrar.
+     *
+     * @param evt El evento del ratón que indica la presión.
+     */
     private void HeadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMousePressed
-        xMouse = evt.getX();
-        yMouse = evt.getY();
+        xMouse = evt.getX();// Guarda la posición X del ratón dentro del componente.
+        yMouse = evt.getY();// Guarda la posición Y del ratón dentro del componente.
     }//GEN-LAST:event_HeadMousePressed
 
+     /**
+     * Manejador de evento al hacer clic en el botón "Revisar Prueba".
+     * Abre una nueva `PruebaPantalla` en modo revisión y cierra la ventana actual.
+     *
+     * @param evt El evento del ratón que indica el clic.
+     */
     private void BotonPruebaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonPruebaMouseClicked
+        // Crea una nueva instancia de 'PruebaPantalla', pasando las preguntas originales,
+        // indicando que es modo revisión (true), y la ubicación actual de la ventana.
         new PruebaPantalla(preguntas, true, loc).setVisible(true);
-        this.dispose();        
+        this.dispose(); // Cierra la ventana actual de resultados.       
     }//GEN-LAST:event_BotonPruebaMouseClicked
 
+    /**
+     * Manejador de evento al entrar el ratón en el botón "Revisar Prueba".
+     * Cambia el ícono para indicar que el botón es interactivo.
+     */
     private void BotonPruebaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonPruebaMouseEntered
         BotonPrueba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonReviPruebTarget.png")));
     }//GEN-LAST:event_BotonPruebaMouseEntered
 
+    /**
+     * Manejador de evento al salir el ratón del botón "Revisar Prueba".
+     * Restaura el ícono original del botón.
+     */
     private void BotonPruebaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonPruebaMouseExited
         BotonPrueba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonReviPrueb.png")));
     }//GEN-LAST:event_BotonPruebaMouseExited
