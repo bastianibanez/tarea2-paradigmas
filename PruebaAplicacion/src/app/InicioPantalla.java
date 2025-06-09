@@ -1,4 +1,3 @@
-
 package app;
 
 import java.awt.*;
@@ -268,11 +267,13 @@ public class InicioPantalla extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     // Manejador de evento cuando se presiona el ratón en el panel Head
     private void HeadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMousePressed
         xMouse = evt.getX();// Obtiene la coordenada X del ratón relativa al componente
         yMouse = evt.getY();// Obtiene la coordenada Y del ratón relativa al componente
     }//GEN-LAST:event_HeadMousePressed
+
     // Manejador de evento cuando se arrastra el ratón en el panel Head
     private void HeadMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HeadMouseDragged
         int x = evt.getXOnScreen();// Obtiene la coordenada X absoluta del ratón en la pantalla
@@ -280,30 +281,37 @@ public class InicioPantalla extends javax.swing.JFrame {
         this.setLocation(x - xMouse, y - yMouse);// Mueve la ventana a la nueva posición
         loc = this.getLocation(); // Guarda la nueva ubicación de la ventana
     }//GEN-LAST:event_HeadMouseDragged
+
     // Manejador de evento cuando se hace clic en el botón Cerrar
     private void CerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseClicked
         System.exit(0);// Termina la aplicación
     }//GEN-LAST:event_CerrarMouseClicked
-    // Manejador de evento cuando se hace clic en el botón Minimizar
-    private void minimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseClicked
-        setState(Frame.ICONIFIED);// Minimiza la ventana
-    }//GEN-LAST:event_minimizarMouseClicked
+
     // Manejador de evento cuando el ratón entra en el botón Cerrar
     private void CerrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseEntered
         Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrarTarget.png")));// Cambia el icono al pasar el ratón
     }//GEN-LAST:event_CerrarMouseEntered
+
     // Manejador de evento cuando el ratón sale del botón Cerrar
     private void CerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseExited
         Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrar.png")));// Restaura el icono al salir el ratón
     }//GEN-LAST:event_CerrarMouseExited
+
+    // Manejador de evento cuando se hace clic en el botón Minimizar
+    private void minimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseClicked
+        setState(Frame.ICONIFIED);// Minimiza la ventana
+    }//GEN-LAST:event_minimizarMouseClicked
+
     // Manejador de evento cuando el ratón entra en el botón Minimizar
     private void minimizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseEntered
         minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/minTarget.png")));// Cambia el icono al pasar el ratón
     }//GEN-LAST:event_minimizarMouseEntered
+
     // Manejador de evento cuando el ratón sale del botón Minimizar
     private void minimizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseExited
         minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/min.png")));// Restaura el icono al salir el ratón
     }//GEN-LAST:event_minimizarMouseExited
+
     // Manejador de evento cuando se hace clic en el botón Iniciar
     private void IniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IniciarMouseClicked
         loc = this.getLocation(); // Guarda la ubicación actual de la ventana
@@ -313,6 +321,22 @@ public class InicioPantalla extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_IniciarMouseClicked
+
+    // Manejador de evento cuando el ratón entra en el botón Iniciar
+    private void IniciarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IniciarMouseEntered
+        if (pruebaCargada != false){// Solo si una prueba ha sido cargada
+            Iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonINICIARcl.png")));// Cambia el icono a la versión "iluminada"
+        }
+    }//GEN-LAST:event_IniciarMouseEntered
+
+    // Manejador de evento cuando el ratón sale del botón Iniciar
+    private void IniciarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IniciarMouseExited
+        if (pruebaCargada != false){// Solo si una prueba ha sido cargada
+            Iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonINICIAR.png")));// Restaura el icono original
+            
+        }
+    }//GEN-LAST:event_IniciarMouseExited
+
     // Manejador de evento cuando se hace clic en el botón CargarB
     private void CargarBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CargarBMouseClicked
         JFileChooser fileChooser = new JFileChooser();// Crea un selector de archivos
@@ -345,23 +369,12 @@ public class InicioPantalla extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_CargarBMouseClicked
-    // Manejador de evento cuando el ratón entra en el botón Iniciar
-    private void IniciarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IniciarMouseEntered
-        if (pruebaCargada != false){// Solo si una prueba ha sido cargada
-            Iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonINICIARcl.png")));// Cambia el icono a la versión "iluminada"
-        }
-    }//GEN-LAST:event_IniciarMouseEntered
-    // Manejador de evento cuando el ratón sale del botón Iniciar
-    private void IniciarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IniciarMouseExited
-        if (pruebaCargada != false){// Solo si una prueba ha sido cargada
-            Iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonINICIAR.png")));// Restaura el icono original
-            
-        }
-    }//GEN-LAST:event_IniciarMouseExited
+
     // Manejador de evento cuando el ratón entra en el botón CargarB
     private void CargarBMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CargarBMouseEntered
         CargarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonCARGARcl.png")));// Cambia el icono a la versión "iluminada"
     }//GEN-LAST:event_CargarBMouseEntered
+
     // Manejador de evento cuando el ratón sale del botón CargarB
     private void CargarBMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CargarBMouseExited
         CargarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonCARGAR.png")));// Restaura el icono original

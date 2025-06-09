@@ -147,7 +147,6 @@ public class PruebaPantalla extends javax.swing.JFrame {
             feedbackLabel.setText(""); // En modo normal, la etiqueta de feedback está vacía.
         }
     }
-
     /**
      * Guarda la respuesta seleccionada por el usuario para la pregunta actual.
      * Solo guarda la respuesta si la pantalla no está en modo de revisión.
@@ -159,7 +158,6 @@ public class PruebaPantalla extends javax.swing.JFrame {
         }
     }
     
-
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -407,7 +405,8 @@ public class PruebaPantalla extends javax.swing.JFrame {
     private void CerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseClicked
         System.exit(0);// Termina la aplicación.
     }//GEN-LAST:event_CerrarMouseClicked
-     /**
+
+    /**
      * Cambia el icono del botón de cerrar cuando el mouse entra en su área.
      * @param evt El evento de mouse.
      */
@@ -422,13 +421,15 @@ public class PruebaPantalla extends javax.swing.JFrame {
     private void CerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CerrarMouseExited
         Cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/cerrar.png")));
     }//GEN-LAST:event_CerrarMouseExited
-     /**
+
+    /**
      * Minimiza la ventana cuando se hace clic en el botón de minimizar.
      * @param evt El evento de mouse.
      */
     private void minimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseClicked
         setState(Frame.ICONIFIED);
     }//GEN-LAST:event_minimizarMouseClicked
+
     /**
      * Cambia el icono del botón de minimizar cuando el mouse entra en su área.
      * @param evt El evento de mouse.
@@ -436,6 +437,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
     private void minimizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseEntered
         minimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/minTarget.png")));
     }//GEN-LAST:event_minimizarMouseEntered
+    
     /**
      * Restaura el icono del botón de minimizar cuando el mouse sale de su área.
      * @param evt El evento de mouse.
@@ -455,6 +457,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
         this.setLocation(x - xMouse, y - yMouse);
         loc = this.getLocation();
     }//GEN-LAST:event_HeadMouseDragged
+
     /**
      * Captura las coordenadas del mouse al presionar el botón sobre el panel superior.
      * Esto se usa como referencia para calcular el desplazamiento al arrastrar.
@@ -464,8 +467,8 @@ public class PruebaPantalla extends javax.swing.JFrame {
         xMouse = evt.getX();
         yMouse = evt.getY();
     }//GEN-LAST:event_HeadMousePressed
-    // Métodos de manejo de eventos para los botones de navegación (Anterior y Siguiente).
 
+    // Métodos de manejo de eventos para los botones de navegación (Anterior y Siguiente).
     /**
      * Maneja el clic en el botón "Anterior".
      * Retrocede a la pregunta anterior si no es la primera pregunta.
@@ -478,7 +481,34 @@ public class PruebaPantalla extends javax.swing.JFrame {
                 actualizarPregunta();
             }
     }//GEN-LAST:event_AnteriorPBMouseClicked
-     /**
+    
+    /**
+     * Cambia el icono del botón "Anterior" al pasar el mouse por encima.
+     * Solo si no es la primera pregunta.
+     * @param evt El evento de mouse.
+     */    
+    private void AnteriorPBMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnteriorPBMouseEntered
+        if (indiceActual > 0){// Solo si no estamos en la primera pregunta.
+            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnteriorTarget.png")));// Icono resaltado.
+        }
+    }//GEN-LAST:event_AnteriorPBMouseEntered
+
+    /**
+     * Restaura el icono del botón "Anterior" al salir el mouse.
+     * Gestiona si el botón debe estar deshabilitado visualmente (primera pregunta).
+     * @param evt El evento de mouse.
+     */
+    private void AnteriorPBMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnteriorPBMouseExited
+        if (indiceActual > 0) {// Si no es la primera pregunta.
+            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnterior.png")));// Icono normal.
+        }
+        else {
+            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnteriorOs.png")));// Icono deshabilitado.
+            AnteriorPB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR)); // Restaura el cursor predeterminado.
+        }
+    }//GEN-LAST:event_AnteriorPBMouseExited
+
+    /**
      * Maneja el clic en el botón "Siguiente".
      * Avanza a la siguiente pregunta o finaliza la prueba.
      * @param evt El evento de clic del mouse.
@@ -504,6 +534,7 @@ public class PruebaPantalla extends javax.swing.JFrame {
                 }
             }
     }//GEN-LAST:event_SiguientePBMouseClicked
+
     /**
      * Cambia el icono del botón "Siguiente" o "Terminar" al pasar el mouse por encima.
      * Gestiona la animación si es la última pregunta.
@@ -538,30 +569,8 @@ public class PruebaPantalla extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_SiguientePBMouseExited
-    /**
-     * Cambia el icono del botón "Anterior" al pasar el mouse por encima.
-     * Solo si no es la primera pregunta.
-     * @param evt El evento de mouse.
-     */
-    private void AnteriorPBMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnteriorPBMouseEntered
-        if (indiceActual > 0){// Solo si no estamos en la primera pregunta.
-            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnteriorTarget.png")));// Icono resaltado.
-        }
-    }//GEN-LAST:event_AnteriorPBMouseEntered
-    /**
-     * Restaura el icono del botón "Anterior" al salir el mouse.
-     * Gestiona si el botón debe estar deshabilitado visualmente (primera pregunta).
-     * @param evt El evento de mouse.
-     */
-    private void AnteriorPBMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnteriorPBMouseExited
-        if (indiceActual > 0) {// Si no es la primera pregunta.
-            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnterior.png")));// Icono normal.
-        }
-        else {
-            AnteriorPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonAnteriorOs.png")));// Icono deshabilitado.
-            AnteriorPB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR)); // Restaura el cursor predeterminado.
-        }
-    }//GEN-LAST:event_AnteriorPBMouseExited
+
+
     // Declaración de variables miembro de la clase.
     private Timer timer;// Objeto Timer para las animaciones.
     private boolean term;// Indica si el botón Terminar está visible.

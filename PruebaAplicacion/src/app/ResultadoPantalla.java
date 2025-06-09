@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package app;
 
 import java.awt.*; // Para manejar la posición de la ventana.
@@ -13,7 +9,6 @@ import javax.swing.*; // Clases principales para la interfaz gráfica.
 import model.Pregunta; // La clase que representa una pregunta.
 import model.TipoPregunta; // El enum para los tipos de pregunta (Múltiple, V/F).
 
-
 /**
  * Pantalla que muestra los resultados de la prueba.
  * Calcula y exhibe el número de respuestas correctas e incorrectas por tipo de pregunta.
@@ -21,7 +16,7 @@ import model.TipoPregunta; // El enum para los tipos de pregunta (Múltiple, V/F
 public class ResultadoPantalla extends javax.swing.JFrame {
     // Variables para mover la ventana sin bordes (xMouse, yMouse)
     int xMouse, yMouse;
-      /**
+    /**
      * Constructor principal de la pantalla de resultados.
      * @param preguntas La lista de preguntas con las respuestas del usuario.
      * @param loc La ubicación previa de la ventana.
@@ -181,33 +176,25 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         Back.add(Head, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 30));
 
         Bottom.setBackground(new java.awt.Color(31, 30, 35));
+        Bottom.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         BotonPrueba.setBackground(new java.awt.Color(31, 30, 35));
         BotonPrueba.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
         BotonPrueba.setForeground(new java.awt.Color(242, 242, 242));
-        BotonPrueba.setText("REVISAR PRUEBA");
+        BotonPrueba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonReviPrueb.png"))); // NOI18N
+        BotonPrueba.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BotonPrueba.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BotonPruebaMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BotonPruebaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                BotonPruebaMouseExited(evt);
+            }
         });
-
-        javax.swing.GroupLayout BottomLayout = new javax.swing.GroupLayout(Bottom);
-        Bottom.setLayout(BottomLayout);
-        BottomLayout.setHorizontalGroup(
-            BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BottomLayout.createSequentialGroup()
-                .addGap(281, 281, 281)
-                .addComponent(BotonPrueba)
-                .addContainerGap(296, Short.MAX_VALUE))
-        );
-        BottomLayout.setVerticalGroup(
-            BottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomLayout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
-                .addComponent(BotonPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
-        );
+        Bottom.add(BotonPrueba, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
 
         Back.add(Bottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 770, 90));
 
@@ -218,6 +205,8 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         ResultadoTexto.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         ResultadoTexto.setForeground(new java.awt.Color(242, 242, 242));
         ResultadoTexto.setRows(5);
+        ResultadoTexto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        ResultadoTexto.setFocusable(false);
 
         javax.swing.GroupLayout MediumLayout = new javax.swing.GroupLayout(Medium);
         Medium.setLayout(MediumLayout);
@@ -292,6 +281,14 @@ public class ResultadoPantalla extends javax.swing.JFrame {
         new PruebaPantalla(preguntas, true, loc).setVisible(true);
         this.dispose();        
     }//GEN-LAST:event_BotonPruebaMouseClicked
+
+    private void BotonPruebaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonPruebaMouseEntered
+        BotonPrueba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonReviPruebTarget.png")));
+    }//GEN-LAST:event_BotonPruebaMouseEntered
+
+    private void BotonPruebaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonPruebaMouseExited
+        BotonPrueba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagCom/BotonReviPrueb.png")));
+    }//GEN-LAST:event_BotonPruebaMouseExited
 
     private Point loc;// Guarda la ubicación de la ventana para mantenerla al cambiar.
     private List<Pregunta> preguntas;// Lista de preguntas con las respuestas del usuario.
